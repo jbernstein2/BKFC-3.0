@@ -23,7 +23,9 @@ def main():
         page_title="Brooklyn FC Match Report",
         layout="wide",
     )
-    apply_streamlit_theme(st)
+    from branding import apply_streamlit_theme                                                            
+    apply_streamlit_theme()
+
 
     st.title("Brooklyn FC Match Report System")
 
