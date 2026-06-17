@@ -1,39 +1,109 @@
-# branding.py
+import streamlit as st
 
-BROOKLYN_PRIMARY = "#000000"  # Black
-BROOKLYN_GOLD = "#D4AF37"     # Gold
-BROOKLYN_SILVER = "#C0C0C0"   # Silver
-BROOKLYN_WHITE = "#FFFFFF"    # White
+# ============================================================
+# BROOKLYN FC BRAND COLORS
+# ============================================================
 
-APP_BACKGROUND = "#111111"
-CARD_BACKGROUND = "#1C1C1C"
-ACCENT_COLOR = BROOKLYN_GOLD
+BROOKLYN_BLACK = "#000000"
+BROOKLYN_GOLD = "#D4AF37"
+BROOKLYN_SILVER = "#A6A6A6"
+BROOKLYN_WHITE = "#FFFFFF"
 
-def apply_streamlit_theme(st):
+# ============================================================
+# APPLY GLOBAL STREAMLIT THEME
+# ============================================================
+
+def apply_streamlit_theme():
     """
-    Apply basic theming to the Streamlit app using Brooklyn FC colors.
+    Injects custom CSS to apply Brooklyn FC branding across the app.
     """
+
     st.markdown(
         f"""
         <style>
-        .reportview-container .main {{
-            background-color: {APP_BACKGROUND};
+
+        /* GLOBAL BACKGROUND */
+        .stApp {{
+            background-color: {BROOKLYN_BLACK};
             color: {BROOKLYN_WHITE};
         }}
-        .sidebar .sidebar-content {{
-            background-color: {CARD_BACKGROUND};
+
+        /* HEADERS */
+        h1, h2, h3, h4, h5, h6 {{
+            color: {BROOKLYN_GOLD} !important;
         }}
-        .stMetric, .stDataFrame, .stTable {{
-            background-color: {CARD_BACKGROUND};
+
+        /* SIDEBAR */
+        section[data-testid="stSidebar"] {{
+            background-color: {BROOKLYN_SILVER};
+        }}
+
+        /* METRIC CARDS */
+        .metric-card {{
+            background-color: {BROOKLYN_BLACK};
+            border: 1px solid {BROOKLYN_GOLD};
+            padding: 12px;
             border-radius: 8px;
+            margin-bottom: 10px;
         }}
+
+        .metric-title {{
+            font-size: 14px;
+            color: {BROOKLYN_GOLD};
+        }}
+
+        .metric-value {{
+            font-size: 22px;
+            font-weight: bold;
+            color: {BROOKLYN_WHITE};
+        }}
+
+        /* TABLES */
+        table {{
+            color: {BROOKLYN_WHITE} !important;
+        }}
+
+        /* BUTTONS */
         .stButton>button {{
-            background-color: {ACCENT_COLOR};
+            background-color: {BROOKLYN_GOLD};
             color: {BROOKLYN_BLACK};
             border-radius: 6px;
             border: none;
+            font-weight: bold;
         }}
+
+        .stButton>button:hover {{
+            background-color: {BROOKLYN_WHITE};
+            color: {BROOKLYN_BLACK};
+        }}
+
         </style>
         """,
-        unsafe_allow_html=True,
+        unsafe_allow_html=True
+    )
+
+
+# ============================================================
+# METRIC CARD COMPONENT
+# ============================================================
+
+def metric_card(title, value, baseline=None, team="brooklyn"):
+    """
+    Renders a styled metric card.
+    team = "brooklyn" or "opponent"
+    """
+
+    color = BROOKLYN_GOLD if team == "brooklyn" else BROOKLYN_SILVER
+
+    baseline_text = f"<div style='color:{BROOKLYN_SILVER}; font-size:12px;'>Baseline: {baseline}</div>" if baseline else ""
+
+    st.markdown(
+        f"""
+        <div class="metric-card" style="border-color:{color};">
+            <div class="metric-title">{title}</div>
+            <div class="metric-value">{value}</div>
+            {baseline_text}
+        </div>
+        """,
+        unsafe_allow_html=True
     )
